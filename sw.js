@@ -1,4 +1,4 @@
-const CACHE_KEY = 'chezzy-cache';
+const CACHE_KEY = 'chezzy-cache-v91';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -6,6 +6,7 @@ const urlsToCache = [
 
 ];
 
+// Installtion Phase
 self.addEventListener('install', function (event) {
     // Perform install steps
     event.waitUntil(
@@ -17,6 +18,7 @@ self.addEventListener('install', function (event) {
     );
 });
 
+// Intercepting Incoming requests and cache them
 self.addEventListener('fetch', function (event) {
     event.respondWith(
         caches.match(event.request)
@@ -28,15 +30,28 @@ self.addEventListener('fetch', function (event) {
             const fetchRequest = event.request.clone();
             return fetch(fetchRequest)
                 .then(response => {
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
+                    if (!response || response.status !== 200) {
                         return response;
                     }
 
-                    responseToCache = response.clone();
+                    const responseToCache = response.clone();
                     caches.open(CACHE_KEY)
-                          .then(cache => cache.put(event.request, responseToCache));
+                        .then(cache => { cache.put(event.request, responseToCache); } );
                     return response;
                 });
         })
     );
+});
+
+// Handling Resource updates
+self.addEventListener('activate', function (event) {
+    event.waitUntil( 
+        caches.keys().then(
+            keys => (
+                keys
+                .filter(key => key !== CACHE_KEY)
+                .map(key => caches.delete(key))
+            )
+        )
+    ); 
 });
