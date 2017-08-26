@@ -18,18 +18,17 @@
         <div class="row">
             <div class="col">
                 <h1>Chezzy Hotel!</h1>
-                <div><img class="img-fluid" src="/assets/hotel.jpg"/></div>
+                <div><img class="img-fluid" src="/assets/hotel.jpg" /></div>
                 <p>
-                        Wlcom Sir, To Chezzy Hotel, The best hotel everzz!1 We give da bestttttt vactionaz ever!
+                    Wlcom Sir, To Chezzy Hotel, The best hotel everzz!1 We give da bestttttt vactionaz ever!
                 </p>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                    <div class="alert alert-danger" role="alert">
- Sorry we are fully booked!
-</div>
-                    <button class="btn btn-primary">Tell Me Wen you have a free room!</button>
+                <div class="alert alert-danger" role="alert">
+                    Sorry we are fully booked! allow push notfication, to get an update when a new room is free!
+                </div>
             </div>
         </div>
         <div class="row">
@@ -41,7 +40,7 @@
                     </div>
                 </div>
             </div>
-                        <div class="col">
+            <div class="col">
                 <div class="card" style="width: 20rem;">
                     <img class="card-img-top" src="/assets/food.jpg" alt="Gorument Food">
                     <div class="card-body">
@@ -49,7 +48,7 @@
                     </div>
                 </div>
             </div>
-                        <div class="col">
+            <div class="col">
                 <div class="card" style="width: 20rem;">
                     <img class="card-img-top" src="/assets/latest-tech.jpg" alt="Gorument Food">
                     <div class="card-body">
@@ -60,6 +59,57 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="roomServiceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Request Room Service</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <form id="room-service-details">
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Room Number:</label>
+                            <input type="text" class="form-control" id="room-number" name="room-number">
+                        </div>
+                        <div class="form-group">
+                            <label for="message-text" class="form-control-label">Request:</label>
+                            <textarea class="form-control" id="request-text" name="request-text"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <p id="loader-room-service" style="display:none;">
+                        Sending...
+                    </p>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="requestRoomService()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="booking-sucess-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Sucess!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                </div>
+                <div class="modal-body">
+                    Your Room Serivce Request have been sent!
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-dark" data-toggle="modal" data-target="#roomServiceModal">Request Room Service</button>
+    <script src="scripts/jquery-3.2.1.min.js"></script>
+    <script src="scripts/popper.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
     <script src="scripts/main.js"></script>
 </body>
 

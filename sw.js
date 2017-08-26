@@ -1,4 +1,4 @@
-const CACHE_KEY = 'chezzy-cache-v91';
+const CACHE_KEY = 'chezzy-cache-7';
 const urlsToCache = [
     '/',
     '/index.html',
@@ -30,13 +30,15 @@ self.addEventListener('fetch', function (event) {
             const fetchRequest = event.request.clone();
             return fetch(fetchRequest)
                 .then(response => {
-                    if (!response || response.status !== 200) {
+                    if (!response || response.status !== 200 || response.type != 'basic') {
                         return response;
                     }
 
                     const responseToCache = response.clone();
                     caches.open(CACHE_KEY)
-                        .then(cache => { cache.put(event.request, responseToCache); } );
+                        .then(cache => {
+                            cache.put(event.request, responseToCache);
+                        });
                     return response;
                 });
         })
@@ -45,7 +47,7 @@ self.addEventListener('fetch', function (event) {
 
 // Handling Resource updates
 self.addEventListener('activate', function (event) {
-    event.waitUntil( 
+    event.waitUntil(
         caches.keys().then(
             keys => (
                 keys
@@ -53,5 +55,41 @@ self.addEventListener('activate', function (event) {
                 .map(key => caches.delete(key))
             )
         )
-    ); 
+    );
 });
+
+// Handling Push Notfication
+self.addEventListener('push', function (event) {
+    const message = event.data.json();
+    message.actions = [{
+            action: "book_room",
+            title: 'Book Now!',
+            icon: 'assets/icons/ok.png'
+    },
+    {
+        action: "no",
+        title: 'Cancel',
+        icon: 'assets/icons/close.png'
+    }
+    ];
+
+    event.waitUntil(self.registration.showNotification("New Room Avialable!", message));
+});
+
+// Handlling a notifcation action
+self.addEventListener('notificationclick', function (event) {
+    const data = event.notification.data;
+
+    event.notification.close();
+    if (event.action === "book_room") {
+        clients.openWindow("/?roomId=" + data.roomId);          
+    }
+    
+})
+
+// Handling background sync
+self.addEventListener('sync', function(event) {
+    if (event.tag == 'myFirstSync') {
+      event.waitUntil(doSomeStuff());
+    }
+  });
